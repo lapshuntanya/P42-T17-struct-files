@@ -26,4 +26,14 @@ struct Card
 		cout << "| Cash:   " << cash << " UAH" << endl;
 		cout << "+++++++++++++++++++++++++++++++++++++\n";
 	}
+
+	void saveToTextFile(FILE* file) {
+		fprintf(file, "\n%s \n%ul \n%0.2lf", name, number, cash);
+	}
+	void loadFromTextFile(FILE* file) {
+		fscanf_s(file, "\n");
+		fgets(name, 50, file);//Golovina Valeria \n
+		name[strlen(name) - 1] = '\0'; //            \n -> \0
+		fscanf_s(file, "%ul %lf", &number, &cash);
+	}
 };
