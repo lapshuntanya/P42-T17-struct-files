@@ -18,7 +18,6 @@ struct Card
 		cout << "Topup your cash (UAH): ";
 		cin >> cash;
 	}
-
 	void showCard() {
 		cout << "+++++++++++++++++++++++++++++++++++++\n";
 		cout << "| Client: " << name << endl;
@@ -32,8 +31,24 @@ struct Card
 	}
 	void loadFromTextFile(FILE* file) {
 		fscanf_s(file, "\n");
-		fgets(name, 50, file);//Golovina Valeria \n
-		name[strlen(name) - 1] = '\0'; //            \n -> \0
+		fgets(name, 50, file);//"Golovina Valeria \n"
+		name[strlen(name) - 1] = '\0'; //        \n -> \0
 		fscanf_s(file, "%ul %lf", &number, &cash);
+	}
+
+	void saveToBinFile(FILE* file) {
+		int sizename = strlen(name) + 1;
+		fwrite(&sizename, sizeof(int), 1, file);	//save name
+		fwrite(name, sizeof(char), sizename, file);
+		fwrite(&number, sizeof(unsigned long), 1, file); //save number
+		fwrite(&cash, sizeof(double), 1, file);			//save cash
+	}
+
+	void loadFromBinFile(FILE* file) {
+		int sizename = 0;
+		fread(&sizename, sizeof(int), 1, file);
+		fread(name, sizeof(char), sizename, file);
+		fread(&number, sizeof(unsigned long), 1, file);
+		fread(&cash, sizeof(double), 1, file);
 	}
 };
